@@ -33,8 +33,7 @@ headers = {'Authorization': 'Token {}'.format(token), 'Content-Type': 'applicati
 data = {"location": "beaubourg"}
 
 while True:
-    #humidity, temperature = Adafruit_DHT.read_retry(11, 4)
-    humidity, temperature = 40,40
+    humidity, temperature = Adafruit_DHT.read_retry(11, 4)
     print('Temp: {0:0.1f} C  Humidity: {1:0.1f}'.format(temperature, humidity))
     try:
         data.update({'type': 'temperature', 'data': temperature})

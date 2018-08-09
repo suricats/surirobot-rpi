@@ -33,17 +33,18 @@ headers = {'Authorization': 'Token {}'.format(token), 'Content-Type': 'applicati
 data = {"location": "beaubourg"}
 
 while True:
-    humidity, temperature = Adafruit_DHT.read_retry(11, 4)
+    #humidity, temperature = Adafruit_DHT.read_retry(11, 4)
+    humidity, temperature = 40,40
     print('Temp: {0:0.1f} C  Humidity: {1:0.1f}'.format(temperature, humidity))
     try:
         data.update({'type': 'temperature', 'data': temperature})
-        r = requests.post(url=url, data=json.dumps(data), headers=headers)
+        r = requests.post(url='{}/api/memory/sensors/'.format(url), data=json.dumps(data), headers=headers)
         if r.status_code != 201 and r.status_code != 200:
             print(r.content)
             raise Exception("HTTP {} for temperature".format(r.status_code))
         print('Temperature added')
         data.update({'type': 'humidity', 'data': humidity})
-        r = requests.post(url=url, data=json.dumps(data), headers=headers)
+        r = requests.post(url='{}/api/memory/sensors/'.format(url), data=json.dumps(data), headers=headers)
         if r.status_code != 201 and r.status_code != 200:
             print(r.content)
             raise Exception("HTTP {} for humidity".format(r.status_code))

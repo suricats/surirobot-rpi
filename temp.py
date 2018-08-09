@@ -39,14 +39,16 @@ while True:
         data.update({'type': 'temperature', 'data': temperature})
         r = requests.post(url=url, data=json.dumps(data), headers=headers)
         if r.status_code != 201 and r.status_code != 200:
+            print(r.content)
             raise Exception("HTTP {} for temperature".format(r.status_code))
         print('Temperature added')
         data.update({'type': 'humidity', 'data': humidity})
         r = requests.post(url=url, data=json.dumps(data), headers=headers)
         if r.status_code != 201 and r.status_code != 200:
+            print(r.content)
             raise Exception("HTTP {} for humidity".format(r.status_code))
         print('Humidity added')
-        sleep(60)
+        sleep(int(os.environ.get('TEMP_SLEEP', '60')))
     except Exception as e:
         print('{} : {}'.format(type(e).__name__, e))
         sleep(300)

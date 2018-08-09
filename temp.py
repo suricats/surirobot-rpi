@@ -49,6 +49,8 @@ while True:
             raise Exception("HTTP {} for humidity".format(r.status_code))
         print('Humidity added')
         sleep(int(os.environ.get('TEMP_SLEEP', '60')))
+    except KeyboardInterrupt:
+        pass
     except Exception as e:
         print('{} : {}'.format(type(e).__name__, e))
         sleep(300)

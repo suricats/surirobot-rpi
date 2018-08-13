@@ -64,6 +64,7 @@ while communicator.is_alive():
                         print(r.content)
                         print("Error - HTTP {} for temperature".format(r.status_code))
                     else:
+                        print(r.content)
                         print('Temperature sended.')
                 else:
                     print(u'{}: {}'.format(k, packet.parsed[k]))
@@ -83,6 +84,7 @@ while communicator.is_alive():
                         print(r.content)
                         print("Error - HTTP {} for magnetic contact".format(r.status_code))
                     else:
+                        print(r.content)
                         print('Magnetic contact sended.')
         if packet.packet_type == PACKET.RADIO and packet.rorg == RORG.RPS:
             for k in packet.parse_eep(0x02, 0x02):

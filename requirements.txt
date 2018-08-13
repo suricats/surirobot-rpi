@@ -1,5 +1,4 @@
 python-dotenv
 requests
 enocean
-plotly
 RPi.GPIO

@@ -5,39 +5,21 @@ PIN CONFIGURATION ON RPI 3
 VCC | X | GND | X | ....... | USB   |
 X   | X |  X  | SIGNAL | .. | PORTS |
 """
-from dotenv import load_dotenv, find_dotenv
-import os
-from time import sleep
-import requests
-import json
+import time
+
 import RPi.GPIO as GPIO
+from dotenv import load_dotenv, find_dotenv
+
 # Load .env
 load_dotenv(find_dotenv())
 
-token = os.environ.get('MEMORY_TOKEN')
-url = os.environ.get('MEMORY_URL')
-headers = {'Authorization': 'Token {}'.format(token), 'Content-Type': 'application/json'}
-data = {"location": "beaubourg"}
-
-while True:
-    humidity, temperature = Adafruit_DHT.read_retry(11, 4)
-    print('Temp: {0:0.1f} C  Humidity: {1:0.1f}'.format(temperature, humidity))
-    try:
-        data.update({'type': 'temperature', 'data': temperature})
-        r = requests.post(url='{}/api/memory/sensors/'.format(url), data=json.dumps(data), headers=headers)
-        if r.status_code != 201 and r.status_code != 200:
-            print(r.content)
-            raise Exception("HTTP {} for temperature".format(r.status_code))
-        print('Temperature added')
-        data.update({'type': 'humidity', 'data': humidity})
-        r = requests.post(url='{}/api/memory/sensors/'.format(url), data=json.dumps(data), headers=headers)
-        if r.status_code != 201 and r.status_code != 200:
-            print(r.content)
-            raise Exception("HTTP {} for humidity".format(r.status_code))
-        print('Humidity added')
-        sleep(int(os.environ.get('TEMP_SLEEP', '60')))
-    except KeyboardInterrupt:
-        pass
-    except Exception as e:
-        print('{} : {}'.format(type(e).__name__, e))
-        sleep(300)
+GPIO.setmode(GPIO.BCM)
+BIG_SOUND_PIN = 7
+GPIO.setup(BIG_SOUND_PIN, GPIO.IN)
+try:
+    while True:
+        print(GPIO.input(BIG_SOUND_PIN))
+        time.sleep(0.1)
+except KeyboardInterrupt:
+    GPIO.cleanup()
+    print("Exiting")

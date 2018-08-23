@@ -3,3 +3,6 @@ requests
 enocean
 redis
 RPi.GPIO
+PyAudio
+numpy
+

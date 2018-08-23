@@ -1,4 +1,5 @@
 python-dotenv
 requests
 enocean
+redis
 RPi.GPIO
